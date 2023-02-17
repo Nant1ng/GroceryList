@@ -1,3 +1,4 @@
+import Card from "@/components/Card";
 import Head from "next/head";
 import styled from "styled-components";
 
@@ -18,6 +19,8 @@ const Title = styled.h1`
   font-weight: bold;
 `;
 
+const Cards = styled.ul``;
+
 export default function Home() {
   return (
     <>
@@ -30,6 +33,10 @@ export default function Home() {
       <div className="h-screen w-screen p-4 bg-gradient-to-r from-[#3caea4]">
         <Container>
           <Title>Grocery List</Title>
+          <Cards>
+            <Card />
+            <Card />
+          </Cards>
         </Container>
       </div>
     </>
