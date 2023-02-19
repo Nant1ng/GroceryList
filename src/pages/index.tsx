@@ -1,6 +1,7 @@
 import Card from "@/components/Card";
 import Head from "next/head";
 import styled from "styled-components";
+import { HiPencilSquare } from "react-icons/hi2";
 
 /* Kolla box-shadow färg senare  */
 const Container = styled.div`
@@ -19,7 +20,28 @@ const Title = styled.h1`
   font-weight: bold;
 `;
 
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const GroceryTitle = styled.input`
+  padding: 0.5rem;
+  width: 100%;
+  min-width: 16rem;
+  max-width: 30rem;
+`;
+
+const Amount = styled.input`
+  padding: 0.5rem;
+  width: 2.5rem;
+  margin: 0 0.3rem 0 0.5rem;
+
+`;
+
 const Cards = styled.ul``;
+
+const Add = styled.button``;
 
 export default function Home() {
   return (
@@ -33,6 +55,13 @@ export default function Home() {
       <div className="h-screen w-screen p-4 bg-gradient-to-r from-[#3caea4]">
         <Container>
           <Title>Grocery List</Title>
+          <Row>
+            <GroceryTitle type="text" placeholder="Add Grocery" />
+            <Amount type="number" />
+            <Add>
+              <HiPencilSquare size={30} />
+            </Add>
+          </Row>
           <Cards>
             <Card />
             <Card />
