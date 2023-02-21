@@ -3,11 +3,10 @@ import Head from "next/head";
 import styled from "styled-components";
 import { HiPencilSquare } from "react-icons/hi2";
 
-/* Kolla box-shadow färg senare  */
 const Container = styled.div`
   background-color: #f2f2f2;
   max-width: 31.25rem;
-  padding: 0.25rem;
+  padding: 1rem;
   margin: auto;
   border-radius: 1rem;
   box-shadow: 0.5rem 0.5rem 0.25rem;
@@ -28,7 +27,7 @@ const Row = styled.div`
 const GroceryTitle = styled.input`
   padding: 0.5rem;
   width: 100%;
-  min-width: 16rem;
+  min-width: 15rem;
   max-width: 30rem;
 `;
 
@@ -36,7 +35,6 @@ const Amount = styled.input`
   padding: 0.5rem;
   width: 2.5rem;
   margin: 0 0.3rem 0 0.5rem;
-
 `;
 
 const Cards = styled.ul``;

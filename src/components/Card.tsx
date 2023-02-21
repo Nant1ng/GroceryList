@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { RxCross1 } from "react-icons/rx";
 
 const Container = styled.li`
   display: flex;
@@ -12,13 +13,22 @@ const Container = styled.li`
 const Content = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
   cursor: pointer;
 `;
 
 const Checkbox = styled.input``;
 
-const Title = styled.p`
-  margin-left: 0.5rem;
+const Title = styled.p``;
+
+const Amount = styled.p`
+  margin: 0 0.5rem 0 0.5rem;
+`;
+
+const DeleteButton = styled.button`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 `;
 
 function Card() {
@@ -26,9 +36,12 @@ function Card() {
     <Container>
       <Content>
         <Checkbox type="checkbox" />
+        <Amount>1x</Amount>
         <Title>Nocco</Title>
       </Content>
-      <p>Icon</p>
+      <DeleteButton>
+        <RxCross1 />
+      </DeleteButton>
     </Container>
   );
 }
