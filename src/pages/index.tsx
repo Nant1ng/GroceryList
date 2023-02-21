@@ -1,7 +1,11 @@
-import Card from "@/components/Card";
+import { useState, useEffect } from "react";
 import Head from "next/head";
 import styled from "styled-components";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../firebase";
+
 import { HiPencilSquare } from "react-icons/hi2";
+import Card from "@/components/Card";
 
 const Container = styled.div`
   background-color: #f2f2f2;
@@ -19,7 +23,7 @@ const Title = styled.h1`
   font-weight: bold;
 `;
 
-const Row = styled.div`
+const FormRow = styled.form`
   display: flex;
   flex-direction: row;
 `;
@@ -42,6 +46,25 @@ const Cards = styled.ul``;
 const Add = styled.button``;
 
 export default function Home() {
+  const [grocerys, setGrocerys] = useState([]);
+  const [grocery, setGrocery] = useState("");
+  const [amount, setAmount] = useState("1");
+
+  const addGrocery = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (grocery === "") {
+      alert("Please enter a vaild grocery");
+      return;
+    }
+    await addDoc(collection(db, "groceryList"), {
+      grocery: grocery,
+      amount: amount,
+      addedToCart: false,
+    });
+    setGrocery("");
+    setAmount("1");
+  };
+
   return (
     <>
       <Head>
@@ -50,16 +73,25 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/groceryListIcon.png" />
       </Head>
-      <div className="h-screen w-screen p-4 bg-gradient-to-r from-[#3caea4]">
+      <div className="h-screen w-screen p-4 bg-gradient-to-tl from-[#3caea4]">
         <Container>
           <Title>Grocery List</Title>
-          <Row>
-            <GroceryTitle type="text" placeholder="Add Grocery" />
-            <Amount type="number" />
+          <FormRow onSubmit={addGrocery}>
+            <GroceryTitle
+              type="text"
+              placeholder="Add Grocery"
+              value={grocery}
+              onChange={(e) => setGrocery(e.target.value)}
+            />
+            <Amount
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+            />
             <Add>
               <HiPencilSquare size={30} />
             </Add>
-          </Row>
+          </FormRow>
           <Cards>
             <Card />
             <Card />
