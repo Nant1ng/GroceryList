@@ -1,7 +1,16 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
+import { GroceryType } from "@/types/grocery";
 import styled from "styled-components";
-import { addDoc, collection } from "firebase/firestore";
+
+import {
+  addDoc,
+  collection,
+  DocumentData,
+  onSnapshot,
+  query,
+  QuerySnapshot,
+} from "firebase/firestore";
 import { db } from "../firebase";
 
 import { HiPencilSquare } from "react-icons/hi2";
@@ -46,9 +55,9 @@ const Cards = styled.ul``;
 const Add = styled.button``;
 
 export default function Home() {
-  const [grocerys, setGrocerys] = useState([]);
+  const [grocerys, setGrocerys] = useState<GroceryType[]>([]);
   const [grocery, setGrocery] = useState("");
-  const [amount, setAmount] = useState("1");
+  const [amount, setAmount] = useState(1);
 
   const addGrocery = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -62,9 +71,25 @@ export default function Home() {
       addedToCart: false,
     });
     setGrocery("");
-    setAmount("1");
+    setAmount(1);
   };
 
+  useEffect(() => {
+    const q = query(collection(db, "groceryList"));
+    const unsubscribe = onSnapshot(
+      q,
+      (querySnapshot: QuerySnapshot<DocumentData>) => {
+        let groceryArr: any = [];
+        querySnapshot.forEach((doc) => {
+          groceryArr.push({ ...doc.data(), id: doc.id });
+        });
+        setGrocerys(groceryArr);
+      }
+    );
+    return () => unsubscribe();
+  }, []);
+
+  console.log(amount);
   return (
     <>
       <Head>
@@ -85,8 +110,9 @@ export default function Home() {
             />
             <Amount
               type="number"
+              min="1"
               value={amount}
-              onChange={(e) => setAmount(e.target.value)}
+              onChange={(e) => setAmount(e.target.valueAsNumber)}
             />
             <Add>
               <HiPencilSquare size={30} />
