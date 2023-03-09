@@ -89,7 +89,7 @@ export default function Home() {
     return () => unsubscribe();
   }, []);
 
-  console.log(amount);
+  console.log(grocerys);
   return (
     <>
       <Head>
@@ -119,8 +119,13 @@ export default function Home() {
             </Add>
           </FormRow>
           <Cards>
-            <Card />
-            <Card />
+            {grocerys && grocerys.length ? (
+              <>
+                {grocerys?.map((data) => (
+                  <Card key={data.id} data={data} />
+                ))}
+              </>
+            ) : null}
           </Cards>
         </Container>
       </div>

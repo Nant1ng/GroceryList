@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { RxCross1 } from "react-icons/rx";
+import { GroceryType } from "@/types/grocery";
 
 const Container = styled.li`
   display: flex;
@@ -31,13 +32,17 @@ const DeleteButton = styled.button`
   cursor: pointer;
 `;
 
-function Card() {
+interface IProps {
+  data: GroceryType;
+}
+
+function Card({ data }: IProps) {
   return (
     <Container>
       <Content>
         <Checkbox type="checkbox" />
-        <Amount>1x</Amount>
-        <Title>Nocco</Title>
+        <Amount>{data.amount} x</Amount>
+        <Title>{data.grocery}</Title>
       </Content>
       <DeleteButton>
         <RxCross1 />
