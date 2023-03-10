@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { RxCross1 } from "react-icons/rx";
 import { GroceryType } from "@/types/grocery";
+import { db } from "@/firebase";
+import { deleteDoc, doc } from "@firebase/firestore";
 
 const Container = styled.li`
   display: flex;
@@ -37,14 +39,21 @@ interface IProps {
 }
 
 function Card({ data }: IProps) {
+  const { id, amount, grocery } = data;
+
+  const deleteCard = async (id: string | undefined) => {
+    const document = doc(db, `groceryList/${id}`);
+    await deleteDoc(document);
+  };
+
   return (
     <Container>
       <Content>
         <Checkbox type="checkbox" />
-        <Amount>{data.amount} x</Amount>
-        <Title>{data.grocery}</Title>
+        <Amount>{amount} x</Amount>
+        <Title>{grocery}</Title>
       </Content>
-      <DeleteButton>
+      <DeleteButton onClick={() => deleteCard(id)}>
         <RxCross1 />
       </DeleteButton>
     </Container>
