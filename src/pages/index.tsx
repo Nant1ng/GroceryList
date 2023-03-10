@@ -75,18 +75,19 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const q = query(collection(db, "groceryList"));
-    const unsubscribe = onSnapshot(
-      q,
-      (querySnapshot: QuerySnapshot<DocumentData>) => {
-        let groceryArr: any = [];
-        querySnapshot.forEach((doc) => {
-          groceryArr.push({ ...doc.data(), id: doc.id });
-        });
-        setGrocerys(groceryArr);
+    onSnapshot(
+      collection(db, "groceryList"),
+      (snapshot: QuerySnapshot<DocumentData>) => {
+        setGrocerys(
+          snapshot.docs.map((doc) => {
+            return {
+              id: doc.id,
+              ...doc.data(),
+            };
+          })
+        );
       }
     );
-    return () => unsubscribe();
   }, []);
 
   console.log(grocerys);
