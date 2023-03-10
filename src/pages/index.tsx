@@ -6,10 +6,12 @@ import styled from "styled-components";
 import {
   addDoc,
   collection,
+  doc,
   DocumentData,
   onSnapshot,
   query,
   QuerySnapshot,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -90,6 +92,16 @@ export default function Home() {
     );
   }, []);
 
+  const toggleAddedToCart = async (data: {
+    id: string;
+    addedToCart: boolean;
+  }) => {
+    await updateDoc(doc(db, "groceryList", data.id), {
+      addedToCart: !data.addedToCart,
+    });
+    console.log("yay");
+  };
+
   console.log(grocerys);
   return (
     <>
@@ -123,7 +135,11 @@ export default function Home() {
             {grocerys && grocerys.length ? (
               <>
                 {grocerys?.map((data) => (
-                  <Card key={data.id} data={data} />
+                  <Card
+                    key={data.id}
+                    data={data}
+                    toggleAddedToCart={toggleAddedToCart}
+                  />
                 ))}
               </>
             ) : null}

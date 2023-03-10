@@ -36,9 +36,10 @@ const DeleteButton = styled.button`
 
 interface IProps {
   data: GroceryType;
+  toggleAddedToCart: any;
 }
 
-function Card({ data }: IProps) {
+function Card({ data, toggleAddedToCart }: IProps) {
   const { id, amount, grocery } = data;
 
   const deleteCard = async (id: string | undefined) => {
@@ -47,7 +48,7 @@ function Card({ data }: IProps) {
   };
 
   return (
-    <Container>
+    <Container onClick={() => toggleAddedToCart(data)}>
       <Content>
         <Checkbox type="checkbox" />
         <Amount>{amount} x</Amount>
