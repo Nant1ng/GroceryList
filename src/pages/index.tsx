@@ -99,7 +99,6 @@ export default function Home() {
     await updateDoc(doc(db, "groceryList", data.id), {
       addedToCart: !data.addedToCart,
     });
-    console.log("yay");
   };
 
   console.log(grocerys);
