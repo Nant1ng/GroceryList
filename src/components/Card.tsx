@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { IconContext } from "react-icons";
 import { RxCross1 } from "react-icons/rx";
+import { MdModeEdit, MdOutlineDone } from "react-icons/md";
 import { GroceryType } from "@/types/grocery";
 import { db } from "@/firebase";
 import { deleteDoc, doc } from "@firebase/firestore";
@@ -39,11 +40,22 @@ const AddedToCart = styled.p`
   text-decoration-thickness: 2px;
 `;
 
-const DeleteButton = styled.button`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
+const EditButton = styled.button``;
+
+const NewGroceryTitle = styled.input`
+  padding: 0.5rem;
+  width: 100%;
+  min-width: 15rem;
+  max-width: 30rem;
 `;
+
+const NewAmount = styled.input`
+  padding: 0.5rem;
+  width: 2.5rem;
+  margin: 0 0.3rem 0 0.5rem;
+`;
+
+const DeleteButton = styled.button``;
 
 interface IProps {
   data: GroceryType;
@@ -52,6 +64,7 @@ interface IProps {
 
 function Card({ data, toggleAddedToCart }: IProps) {
   const { id, amount, grocery, addedToCart } = data;
+  const [editCard, setEditCard] = useState(false);
 
   const deleteCard = async (id: string | undefined) => {
     const document = doc(db, `groceryList/${id}`);
@@ -59,29 +72,52 @@ function Card({ data, toggleAddedToCart }: IProps) {
   };
 
   return (
-    <Container onClick={() => toggleAddedToCart(data)}>
+    <Container>
       {addedToCart ? (
         <>
-          <Content>
-            <Checkbox type="checkbox" checked={false} />
-            <Amount>{amount} x</Amount>
-            <Title>{grocery}</Title>
-          </Content>
-        </>
-      ) : (
-        <>
-          <Content>
+          <Content onClick={() => toggleAddedToCart(data)}>
             <Checkbox type="checkbox" checked={true} />
             <AddedToCart>
               <Amount>{amount} x</Amount>
               <Title>{grocery}</Title>
             </AddedToCart>
           </Content>
-          <IconContext.Provider value={{ color: "#49b6ac" }}>
+          <IconContext.Provider value={{ color: "#49b6ac", size: "20px" }}>
             <DeleteButton onClick={() => deleteCard(id)}>
               <RxCross1 />
             </DeleteButton>
           </IconContext.Provider>
+        </>
+      ) : (
+        <>
+          {editCard ? (
+            <>
+              <NewGroceryTitle type="text" placeholder="New Grocery Title" />
+              <NewAmount type="number" min="1" />
+              <EditButton onClick={() => setEditCard(!editCard)}>
+                <IconContext.Provider
+                  value={{ color: "#49b6ac", size: "20px" }}
+                >
+                  <MdOutlineDone />
+                </IconContext.Provider>
+              </EditButton>
+            </>
+          ) : (
+            <>
+              <Content>
+                <Checkbox type="checkbox" checked={false} />
+                <Amount>{amount} x</Amount>
+                <Title>{grocery}</Title>
+              </Content>
+              <EditButton onClick={() => setEditCard(!editCard)}>
+                <IconContext.Provider
+                  value={{ color: "#49b6ac", size: "20px" }}
+                >
+                  <MdModeEdit />
+                </IconContext.Provider>
+              </EditButton>
+            </>
+          )}
         </>
       )}
     </Container>
