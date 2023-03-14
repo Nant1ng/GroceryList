@@ -9,7 +9,6 @@ import {
   doc,
   DocumentData,
   onSnapshot,
-  query,
   QuerySnapshot,
   updateDoc,
 } from "firebase/firestore";
@@ -56,6 +55,11 @@ const Cards = styled.ul``;
 
 const Add = styled.button``;
 
+const CountItems = styled.p`
+  text-align: center;
+  padding: 2px;
+`;
+
 export default function Home() {
   const [grocerys, setGrocerys] = useState<GroceryType[]>([]);
   const [title, setTitle] = useState("");
@@ -101,7 +105,6 @@ export default function Home() {
     });
   };
 
-
   return (
     <>
       <Head>
@@ -143,6 +146,9 @@ export default function Home() {
               </>
             ) : null}
           </Cards>
+          {grocerys.length < 1 ? null : (
+            <CountItems>{`You have ${grocerys.length} grocery items in your list`}</CountItems>
+          )}
         </Container>
       </div>
     </>
