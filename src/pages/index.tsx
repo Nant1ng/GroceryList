@@ -58,21 +58,21 @@ const Add = styled.button``;
 
 export default function Home() {
   const [grocerys, setGrocerys] = useState<GroceryType[]>([]);
-  const [grocery, setGrocery] = useState("");
+  const [title, setTitle] = useState("");
   const [amount, setAmount] = useState(1);
 
   const addGrocery = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (grocery === "") {
-      alert("Please enter a vaild grocery");
+    if (title === "") {
+      alert("Please enter a vaild title");
       return;
     }
     await addDoc(collection(db, "groceryList"), {
-      grocery: grocery,
+      title: title,
       amount: amount,
       addedToCart: false,
     });
-    setGrocery("");
+    setTitle("");
     setAmount(1);
   };
 
@@ -101,7 +101,7 @@ export default function Home() {
     });
   };
 
-  console.log(grocerys);
+
   return (
     <>
       <Head>
@@ -116,9 +116,9 @@ export default function Home() {
           <FormRow onSubmit={addGrocery}>
             <GroceryTitle
               type="text"
-              placeholder="Add Grocery"
-              value={grocery}
-              onChange={(e) => setGrocery(e.target.value)}
+              placeholder="Add Grocery Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
             <Amount
               type="number"

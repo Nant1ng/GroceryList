@@ -12,7 +12,7 @@ const Container = styled.li`
   justify-content: space-between;
   background-color: #e2e8f0;
   padding: 1rem;
-  margin: 0.5rem 0 0.5rem 0;
+  margin: 0.5rem 0 0.5rem 0;s
   cursor: pointer;
 `;
 
@@ -20,6 +20,7 @@ const Content = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  width: 100%;
   cursor: pointer;
 `;
 
@@ -49,7 +50,7 @@ const NewGroceryTitle = styled.input`
   max-width: 30rem;
 `;
 
-const NewAmount = styled.input`
+const NewGroceryAmount = styled.input`
   padding: 0.5rem;
   width: 2.5rem;
   margin: 0 0.3rem 0 0.5rem;
@@ -63,13 +64,17 @@ interface IProps {
 }
 
 function Card({ data, toggleAddedToCart }: IProps) {
-  const { id, amount, grocery, addedToCart } = data;
-  const [editCard, setEditCard] = useState(false);
+  const { id, amount, title, addedToCart } = data;
+  const [editGrocery, setEditGrocery] = useState(false);
+  const [newTitle, setNewTitle] = useState("");
+  const [NewAmount, setNewAmount] = useState(1);
 
   const deleteCard = async (id: string | undefined) => {
     const document = doc(db, `groceryList/${id}`);
     await deleteDoc(document);
   };
+
+  const editCard = async (id: string | undefined, docData: any) => {};
 
   return (
     <Container>
@@ -79,7 +84,7 @@ function Card({ data, toggleAddedToCart }: IProps) {
             <Checkbox type="checkbox" checked={true} />
             <AddedToCart>
               <Amount>{amount} x</Amount>
-              <Title>{grocery}</Title>
+              <Title>{title}</Title>
             </AddedToCart>
           </Content>
           <IconContext.Provider value={{ color: "#49b6ac", size: "20px" }}>
@@ -90,11 +95,16 @@ function Card({ data, toggleAddedToCart }: IProps) {
         </>
       ) : (
         <>
-          {editCard ? (
+          {editGrocery ? (
             <>
-              <NewGroceryTitle type="text" placeholder="New Grocery Title" />
-              <NewAmount type="number" min="1" />
-              <EditButton onClick={() => setEditCard(!editCard)}>
+              <NewGroceryTitle
+                type="text"
+                placeholder="New Grocery Title"
+                value={newTitle}
+                onChange={(e) => setNewTitle(e.target.value)}
+              />
+              <NewGroceryAmount type="number" min="1" />
+              <EditButton onClick={() => setEditGrocery(!editGrocery)}>
                 <IconContext.Provider
                   value={{ color: "#49b6ac", size: "20px" }}
                 >
@@ -104,12 +114,12 @@ function Card({ data, toggleAddedToCart }: IProps) {
             </>
           ) : (
             <>
-              <Content>
+              <Content onClick={() => toggleAddedToCart(data)}>
                 <Checkbox type="checkbox" checked={false} />
                 <Amount>{amount} x</Amount>
-                <Title>{grocery}</Title>
+                <Title>{title}</Title>
               </Content>
-              <EditButton onClick={() => setEditCard(!editCard)}>
+              <EditButton onClick={() => setEditGrocery(!editGrocery)}>
                 <IconContext.Provider
                   value={{ color: "#49b6ac", size: "20px" }}
                 >

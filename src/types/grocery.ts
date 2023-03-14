@@ -1,12 +1,12 @@
 export interface GroceryType {
   id?: string;
-  grocery?: string;
+  title?: string;
   amount?: number;
   addedToCart?: boolean;
 }
 
 export interface AddGroceryType {
-  grocery: string;
+  title: string;
   amount: number;
   addedToCart: boolean;
 }
