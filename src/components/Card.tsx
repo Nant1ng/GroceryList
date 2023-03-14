@@ -5,7 +5,7 @@ import { RxCross1 } from "react-icons/rx";
 import { MdModeEdit, MdOutlineDone } from "react-icons/md";
 import { GroceryType } from "@/types/grocery";
 import { db } from "@/firebase";
-import { deleteDoc, doc } from "@firebase/firestore";
+import { deleteDoc, doc, setDoc } from "@firebase/firestore";
 
 const Container = styled.li`
   display: flex;
@@ -43,6 +43,8 @@ const AddedToCart = styled.p`
 
 const EditButton = styled.button``;
 
+const EditDoneButton = styled.button``;
+
 const NewGroceryTitle = styled.input`
   padding: 0.5rem;
   width: 100%;
@@ -66,15 +68,23 @@ interface IProps {
 function Card({ data, toggleAddedToCart }: IProps) {
   const { id, amount, title, addedToCart } = data;
   const [editGrocery, setEditGrocery] = useState(false);
-  const [newTitle, setNewTitle] = useState("");
-  const [NewAmount, setNewAmount] = useState(1);
+  const [newTitle, setNewTitle] = useState(`${title}`);
+  const [NewAmount, setNewAmount] = useState(amount);
 
   const deleteCard = async (id: string | undefined) => {
     const document = doc(db, `groceryList/${id}`);
     await deleteDoc(document);
   };
 
-  const editCard = async (id: string | undefined, docData: any) => {};
+  const editCard = async (id: string | undefined) => {
+    const getCardById = doc(db, `groceryList/${id}`);
+    await setDoc(
+      getCardById,
+      { title: newTitle, amount: NewAmount },
+      { merge: true }
+    );
+    setEditGrocery(!editGrocery);
+  };
 
   return (
     <Container>
@@ -103,14 +113,19 @@ function Card({ data, toggleAddedToCart }: IProps) {
                 value={newTitle}
                 onChange={(e) => setNewTitle(e.target.value)}
               />
-              <NewGroceryAmount type="number" min="1" />
-              <EditButton onClick={() => setEditGrocery(!editGrocery)}>
+              <NewGroceryAmount
+                type="number"
+                min="1"
+                value={NewAmount}
+                onChange={(e) => setNewAmount(e.target.valueAsNumber)}
+              />
+              <EditDoneButton onClick={() => editCard(id)}>
                 <IconContext.Provider
                   value={{ color: "#49b6ac", size: "20px" }}
                 >
                   <MdOutlineDone />
                 </IconContext.Provider>
-              </EditButton>
+              </EditDoneButton>
             </>
           ) : (
             <>
