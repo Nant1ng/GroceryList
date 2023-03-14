@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { IconContext } from "react-icons";
 import { RxCross1 } from "react-icons/rx";
@@ -34,7 +34,7 @@ const Amount = styled.p`
   margin: 0 0.5rem 0 0.5rem;
 `;
 
-const AddedToCart = styled.p`
+const AddedToCart = styled.div`
   display: flex;
   text-decoration: line-through;
   text-decoration-color: #49b6ac;
@@ -91,7 +91,7 @@ function Card({ data, toggleAddedToCart }: IProps) {
       {addedToCart ? (
         <>
           <Content onClick={() => toggleAddedToCart(data)}>
-            <Checkbox type="checkbox" checked={true} />
+            <Checkbox type="checkbox" checked={true} readOnly />
             <AddedToCart>
               <Amount>{amount} x</Amount>
               <Title>{title}</Title>
@@ -130,7 +130,7 @@ function Card({ data, toggleAddedToCart }: IProps) {
           ) : (
             <>
               <Content onClick={() => toggleAddedToCart(data)}>
-                <Checkbox type="checkbox" checked={false} />
+                <Checkbox type="checkbox" checked={false} readOnly />
                 <Amount>{amount} x</Amount>
                 <Title>{title}</Title>
               </Content>

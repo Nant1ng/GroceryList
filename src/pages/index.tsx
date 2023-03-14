@@ -147,7 +147,9 @@ export default function Home() {
             ) : null}
           </Cards>
           {grocerys.length < 1 ? null : (
-            <CountItems>{`You have ${grocerys.length} grocery items in your list`}</CountItems>
+
+              <CountItems>{`You have ${grocerys.length} grocery items in your list`}</CountItems>
+ 
           )}
         </Container>
       </div>
